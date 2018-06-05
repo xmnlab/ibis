@@ -95,7 +95,8 @@ _dml = frozenset({
     'then',  # conditional expression
     'when',  # conditional expression
     'where',  # select
-    'with'  # select
+    'with',  # select
+    'rowid',  # select
 })
 
 # https://www.mapd.com/docs/latest/mapd-core-guide/tables/

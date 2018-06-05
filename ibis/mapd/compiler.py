@@ -181,11 +181,31 @@ class MapDExprTranslator(compiles.ExprTranslator):
     """
     _registry = mapd_ops._operation_registry
     _rewrites = impala_compiler.ImpalaExprTranslator._rewrites.copy()
+    _ops_dont_rename = (ops.RowId, )
 
     context_class = MapDQueryContext
 
     def name(self, translated, name, force=True):
         return mapd_ops._name_expr(translated, name)
+
+    def _needs_name(self, expr):
+        if not self.named:
+            return False
+
+        op = expr.op()
+        if isinstance(op, ops.TableColumn):
+            # This column has been given an explicitly different name
+            if expr.get_name() != op.name:
+                return True
+            return False
+
+        if expr.get_name() is ir.unnamed:
+            return False
+
+        if isinstance(op, self._ops_dont_rename):
+            return False
+
+        return True
 
 
 class MapDDialect(compiles.Dialect):

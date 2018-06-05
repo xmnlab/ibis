@@ -1072,7 +1072,7 @@ class RowNumber(RankBase):
     # Equivalent to SQL ROW_NUMBER()
 
 
-class RowId(ValueOp):
+class RowId(Node):
     """
     Compute row id. Similar to SQL ROW_NUMBER() but with no window operation
 
@@ -1085,13 +1085,22 @@ class RowId(ValueOp):
 
     Returns
     -------
-    row_number : Int64Column
+    row_id : Int64Column
     """
+    name = 'rowid'
+
+    def root_tables(self):
+        exprs = [arg for arg in self.args if isinstance(arg, ir.Expr)]
+        return distinct_roots(*exprs)
+
+    def get_name(self):
+        return ir.unnamed
+
     def resolve_name(self):
-        return 'rowid'
+        return self.name
 
     def has_resolved_name(self):
-        return True
+        return False
 
     def output_type(self):
         return dt.int64.array_type()
