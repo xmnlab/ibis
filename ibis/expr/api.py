@@ -62,7 +62,7 @@ __all__ = [
     'cast', 'coalesce', 'greatest', 'least',
     'cross_join', 'join',
     'aggregate',
-    'row_number',
+    'row_number', 'row_id',
     'negate', 'ifelse',
     'Expr', 'Schema',
     'window', 'trailing_window', 'cumulative_window',
@@ -377,6 +377,16 @@ def row_number():
     row_number : IntArray
     """
     return ops.RowNumber().to_expr()
+
+
+def row_id():
+    """Function for the current row id.
+
+    Returns
+    -------
+    row_id : IntArray
+    """
+    return ops.RowId().to_expr()
 
 
 e = ops.E().to_expr()

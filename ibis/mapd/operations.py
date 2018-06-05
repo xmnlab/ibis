@@ -610,6 +610,7 @@ _general_ops = {
     ops.Cast: _cast,
     ops.Where: fixed_arity('if', 3),
     ops.TableColumn: _table_column,
+    ops.RowId: lambda *args: 'rowid'
 }
 
 # UNSUPPORTED OPERATIONS

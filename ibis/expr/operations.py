@@ -1072,6 +1072,31 @@ class RowNumber(RankBase):
     # Equivalent to SQL ROW_NUMBER()
 
 
+class RowId(ValueOp):
+    """
+    Compute row id. Similar to SQL ROW_NUMBER() but with no window operation
+
+    Examples
+    --------
+    >>> import ibis
+    >>> t = ibis.table([('values', dt.int64)])
+    >>> row_num = ibis.row_id()
+    >>> result = t[t.values, row_num]
+
+    Returns
+    -------
+    row_number : Int64Column
+    """
+    def resolve_name(self):
+        return 'rowid'
+
+    def has_resolved_name(self):
+        return True
+
+    def output_type(self):
+        return dt.int64.array_type()
+
+
 class CumulativeOp(AnalyticOp):
     pass
 
